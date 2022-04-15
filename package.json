@@ -5,10 +5,10 @@
   "main": "dist/index.js",
   "scripts": {
     "tsc": "./node_modules/typescript/bin/tsc",
-    "postinstall": "./node_modules/typescript/bin/tsc",
+    "build": "tsc",
+    "postinstall": "npm run build",
     "watch-node": "nodemon dist/index.js",
     "watch-ts": "tsc -w",
-    "build": "rimraf dist && tsc",
     "preserve": "npm run build",
     "serve": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
     "prestart": "npm run build",
