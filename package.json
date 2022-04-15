@@ -4,9 +4,8 @@
   "description": "XML Parsing and Storage",
   "main": "dist/index.js",
   "scripts": {
-    "postinstall": "tsc",
-    "watch-node": "nodemon dist/index.js",
-    "watch-ts": "tsc -w",
+    "tsc": "tsc",
+    "postinstall": "npm run tsc",
     "build": "rimraf dist && tsc",
     "preserve": "npm run build",
     "serve": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
