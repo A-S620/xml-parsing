@@ -10,7 +10,7 @@
     "preserve": "npm run build",
     "serve": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
     "prestart": "npm run build",
-    "start": "cross-env NODE_ENV=production node dist/index.js",
+    "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:unit": "ENV_FILE=./config/.env.test jest --coverage",
     "watch": "ENV_FILE=./config/.env.test jest --watch"
