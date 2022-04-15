@@ -4,7 +4,8 @@
   "description": "XML Parsing and Storage",
   "main": "dist/index.js",
   "scripts": {
-    "postinstall": "tsc",
+    "tsc": "./node_modules/typescript/bin/tsc",
+    "postinstall": "./node_modules/typescript/bin/tsc",
     "watch-node": "nodemon dist/index.js",
     "watch-ts": "tsc -w",
     "build": "rimraf dist && tsc",
