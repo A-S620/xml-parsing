@@ -5,14 +5,27 @@ AWS.config.update({
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
   region: 'eu-west-2',
 });
-export const getAllKeysOfFileObjects = async (arrayOfObjects: Array<object>) => {
-
+export const getAllKeysOfFileObjects = (arrayOfObjects: Array<object>) => {
+  const keys: string[] = [];
+  arrayOfObjects.forEach((obj: object) => {
+    Object.entries(obj).forEach(([key, value]) => {
+      if (key === 'Key') {
+        const fileName = value as string;
+        const fileExtension = fileName.split('.').pop();
+        if (fileExtension === 'txt' || fileExtension === 'xml') {
+          keys.push(fileName);
+        }
+      }
+    });
+  });
+  return keys;
 };
 export const getAllObjectsInFolder = async (prefix: string) => {
   const s3 = new AWS.S3();
 
   const params: object = {
     Bucket: process.env.BUCKET_NAME,
+    Delimiter: '/',
     Prefix: prefix,
   };
   try {
@@ -23,9 +36,7 @@ export const getAllObjectsInFolder = async (prefix: string) => {
       return s3Objects.Contents;
     }
   } catch (e) {
-    const error = new Error(e as string);
-    throw error;
+    throw new Error(e as string);
   }
-
   return [];
 };
