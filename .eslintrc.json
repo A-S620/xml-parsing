@@ -11,13 +11,11 @@
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
     "parserOptions": {
-        "ecmaVersion": 2020,
+        "ecmaVersion": 2019,
         "sourceType": "module",
         "project": "./tsconfig.json"
     },
     "plugins": [
         "@typescript-eslint"
-    ],
-    "rules": {
-    }
+    ]
 }
