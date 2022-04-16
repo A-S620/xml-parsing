@@ -1,4 +1,4 @@
-import {getAllKeysOfFileObjects, getAllObjectsInFolder} from '../src/s3-functions';
+const {getAllKeysOfFileObjects, getAllObjectsInFolder, getFileByKey} = require('../src/s3-functions');
 
 require('dotenv').config();
 
@@ -15,13 +15,13 @@ afterAll(() => {
 describe('S3 Functions', () => {
   describe('getAllObjectsInFolder', () => {
     it('should return all the objects sin the folder', async () => {
-      const result = await getAllObjectsInFolder("test/");
+      const result = await  getAllObjectsInFolder("test/");
       expect(Number(result.length)).toBeGreaterThan(0);
     });
-    it('should throw san error when the BUCKET_NAME is invalid', async () => {
+    it('should throw an error when the BUCKET_NAME is invalid', async () => {
       process.env.BUCKET_NAME = "";
       try {
-        await getAllObjectsInFolder("");
+        await  getAllObjectsInFolder("");
       } catch (error) {
         expect(error).toEqual(new Error("UriParameterError: Expected uri parameter to have length >= 1, but found \"\" for params.Bucket"));
       }
@@ -29,8 +29,14 @@ describe('S3 Functions', () => {
   });
   describe("getAllKeysOfFileObjects", () => {
     it("should return the keys of all the objects in the folder", async () => {
-      const result = await getAllObjectsInFolder("test/");
-      expect(getAllKeysOfFileObjects(result)).toEqual(["test/sample-xml.txt"]);
+      const result = await  getAllObjectsInFolder("test/");
+      expect( getAllKeysOfFileObjects(result)).toEqual(["test/sample-xml.txt"]);
+    });
+    });
+  describe("getObjectByKey", () => {
+    it("should return the object when the key is valid", async () => {
+      const result = await  getFileByKey("test/sample-xml.txt");
+      expect(result.substring(0, 43)).toEqual("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
     });
     });
   })

@@ -5,7 +5,7 @@ AWS.config.update({
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
   region: 'eu-west-2',
 });
-export const getAllKeysOfFileObjects = (arrayOfObjects: Array<object>) => {
+const getAllKeysOfFileObjects = (arrayOfObjects: Array<object>) => {
   const keys: string[] = [];
   arrayOfObjects.forEach((obj: object) => {
     Object.entries(obj).forEach(([key, value]) => {
@@ -20,7 +20,7 @@ export const getAllKeysOfFileObjects = (arrayOfObjects: Array<object>) => {
   });
   return keys;
 };
-export const getAllObjectsInFolder = async (prefix: string) => {
+const getAllObjectsInFolder = async (prefix: string) => {
   const s3 = new AWS.S3();
 
   const params: object = {
@@ -39,4 +39,26 @@ export const getAllObjectsInFolder = async (prefix: string) => {
     throw new Error(e as string);
   }
   return [];
+};
+
+const getFileByKey = async (key: string) => {
+  const s3 = new AWS.S3();
+  const params = {
+    Bucket: process.env.BUCKET_NAME,
+    Key: key,
+  };
+  try {
+    const file = await s3.getObject(<S3.GetObjectRequest>params).promise();
+    if (file.Body) {
+      return file.Body.toString('utf-8');
+    }
+  } catch (e) {
+    throw new Error(e as string);
+  }
+  return null;
+};
+module.exports = {
+  getAllKeysOfFileObjects,
+  getAllObjectsInFolder,
+  getFileByKey,
 };
