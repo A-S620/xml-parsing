@@ -12,8 +12,8 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('<h1>Hello from the TypeScript world!</h1>');
+app.get('/hello', (req: Request, res: Response) => {
+  res.send('Hello World!');
 });
 
 app.listen(PORT, () => console.log(`Running on ${PORT} ⚡`));
