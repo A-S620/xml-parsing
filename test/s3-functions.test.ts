@@ -4,7 +4,7 @@ require('dotenv').config();
 describe('S3 Functions', () => {
   describe('getAllObjectsInFolder', () => {
     it('should return the keys of the objects in the folder', async () => {
-      const result = await getAllObjectsInFolder("");
+      const result = await getAllObjectsInFolder("test/");
       expect(Number(result.length)).toBeGreaterThan(0);
     });
     it('should throw an error when the BUCKET_NAME is invalid', async () => {

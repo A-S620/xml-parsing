@@ -5,7 +5,7 @@ AWS.config.update({
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
   region: 'eu-west-2',
 });
-export const getAllObjectKeysInFolder = async (prefix: string) => {
+export const getAllKeysOfFileObjects = async (arrayOfObjects: Array<object>) => {
 
 };
 export const getAllObjectsInFolder = async (prefix: string) => {
@@ -23,7 +23,8 @@ export const getAllObjectsInFolder = async (prefix: string) => {
       return s3Objects.Contents;
     }
   } catch (e) {
-    throw e as Error;
+    const error = new Error(e as string);
+    throw error;
   }
 
   return [];
