@@ -38,5 +38,12 @@ describe('S3 Functions', () => {
       const result = await  getFileByKey("test/sample-xml.txt");
       expect(result.substring(0, 43)).toEqual("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
     });
+    it('should throw an error when the file key is invalid', async () => {
+      try {
+        await  getFileByKey("not-a-valid-key");
+      } catch (error) {
+        expect(error).toEqual(new Error("NoSuchKey: The specified key does not exist."));
+      }
+    });
     });
   })
