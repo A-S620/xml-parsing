@@ -10,7 +10,7 @@
     "watch-ts": "tsc -w",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:unit": "ENV_FILE=./config/.env.test jest --coverage",
-    "watch": "ENV_FILE=./config/.env.test jest --watch"
+    "watch": "jest --watch --setupFiles dotenv/config"
   },
   "repository": {
     "type": "git",
