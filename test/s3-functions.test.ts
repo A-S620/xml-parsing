@@ -1,4 +1,4 @@
-const {getAllKeysOfFileObjects, getAllObjectsInFolder, getFileByKey} = require('../src/s3-functions');
+const {getAllKeysOfFileObjects, getAllObjectsInFolder, getFileByKey} = require('../src/util/s3-functions');
 
 require('dotenv').config();
 

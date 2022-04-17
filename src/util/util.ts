@@ -1,11 +1,17 @@
-import * as xml2js from 'xml2js';
+import { XMLParser } from 'fast-xml-parser';
 
-export function convertXMLtoJSON(xml: string): object {
-  xml2js.parseString(xml, (err: any, result: any) => {
-    if (err) {
-      throw err;
-    }
-    // console.log(result);
-  });
-  return {};
+function convertXMLDocToJSON(xml: string) {
+  const options = {
+    ignoreAttributes: false,
+    allowBooleanAttributes: true,
+    attributeNamePrefix: '',
+    ignorePiTags: true,
+  };
+  const parser = new XMLParser(options);
+  const jsObject = parser.parse(xml) as object;
+  console.log(jsObject);
+  if (jsObject) {
+    return jsObject;
+  }
 }
+export { convertXMLDocToJSON };
