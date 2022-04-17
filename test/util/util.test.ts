@@ -1,6 +1,6 @@
-import {convertXMLDocToJSON} from "../../src/util/util";
+import {convertXMLDocToJSON, findReturnedDebitItems} from "../../src/util/util";
 
-const {getFileByKey} = require("../../src/util/s3-functions");
+const {getFileByKey} = require("../../src/s3-functions");
 
 describe("Util", () => {
     describe("convertXMLtoJSON", () => {
@@ -8,9 +8,12 @@ describe("Util", () => {
             expect(convertXMLDocToJSON(await getFileByKey("test/sample-xml.txt"))).toEqual(xmlAsJSON)
 
         })
-        }
-
-    )
+    })
+    describe("findReturnedDebitItems", () => {
+        it("should correctly extract the ReturnedDebitItems Array from a json object", async () => {
+            expect(findReturnedDebitItems(xmlAsJSON)).toEqual(returnedDebitItems)
+        })
+    })
 })
 const xmlAsJSON = {
     "BACSDocument":{
@@ -108,3 +111,56 @@ const xmlAsJSON = {
         "xsi:noNamespaceSchemaLocation":"newbacs-advices.xsd"
     }
 }
+const returnedDebitItems = [
+    {
+        "PayerAccount":{
+            "bankName":"A BANK",
+            "branchName":"A BRANCH",
+            "name":"FRED SMITH",
+            "number":"12345678",
+            "ref":"X01234",
+            "sortCode":"01-02-03"
+        },
+        "currency":"GBP",
+        "originalProcessingDate":"2017-01-12",
+        "ref":"X01234",
+        "returnCode":"1012",
+        "returnDescription":"INSTRUCTION CANCELLED",
+        "transCode":"17",
+        "valueOf":"65.00"
+    },
+    {
+        "PayerAccount":{
+            "bankName":"A DIFFERENT BANK",
+            "branchName":"DIFF BRANCH",
+            "name":"JESSICA RABBIT",
+            "number":"23456789",
+            "ref":"X02345",
+            "sortCode":"02-03-04"
+        },
+        "currency":"GBP",
+        "originalProcessingDate":"2017-01-12",
+        "ref":"X02345",
+        "returnCode":"1012",
+        "returnDescription":"INSTRUCTION CANCELLED",
+        "transCode":"17",
+        "valueOf":"60.00"
+    },
+    {
+        "PayerAccount":{
+            "bankName":"SPECIAL BUILDING SOCIETY",
+            "branchName":"LOCAL BRANCH",
+            "name":"STEVE ROGERS",
+            "number":"34567891",
+            "ref":"X03456",
+            "sortCode":"03-04-05"
+        },
+        "currency":"GBP",
+        "originalProcessingDate":"2017-01-12",
+        "ref":"X03456",
+        "returnCode":"1012",
+        "returnDescription":"INSTRUCTION CANCELLED",
+        "transCode":"17",
+        "valueOf":"100.00"
+    }
+]

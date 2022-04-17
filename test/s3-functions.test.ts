@@ -1,4 +1,4 @@
-import {getAllKeysOfFileObjects, getAllObjectsInFolder, getFileByKey} from "../src/util/s3-functions";
+import {getAllKeysOfFileObjects, getAllObjectsInFolder, getFileByKey} from "../src/s3-functions";
 
 require('dotenv').config();
 
