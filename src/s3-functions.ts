@@ -1,10 +1,12 @@
 import AWS, { S3 } from 'aws-sdk';
+import { ManagedUpload } from 'aws-sdk/clients/s3';
 
 AWS.config.update({
   accessKeyId: process.env.ACCESS_KEY_ID,
   secretAccessKey: process.env.SECRET_ACCESS_KEY,
   region: 'eu-west-2',
 });
+const s3 = new AWS.S3();
 const getAllKeysOfFileObjects = (arrayOfObjects: Array<object>) => {
   const keys: string[] = [];
   arrayOfObjects.forEach((obj: object) => {
@@ -21,8 +23,6 @@ const getAllKeysOfFileObjects = (arrayOfObjects: Array<object>) => {
   return keys;
 };
 const getAllObjectsInFolder = async (prefix: string) => {
-  const s3 = new AWS.S3();
-
   const params: object = {
     Bucket: process.env.BUCKET_NAME,
     Delimiter: '/',
@@ -42,7 +42,6 @@ const getAllObjectsInFolder = async (prefix: string) => {
 };
 
 const getFileByKey = async (key: string) => {
-  const s3 = new AWS.S3();
   const params = {
     Bucket: process.env.BUCKET_NAME,
     Key: key,
@@ -57,8 +56,33 @@ const getFileByKey = async (key: string) => {
   }
   return '';
 };
+const createJSONDocAndUpload = (obj: object, fileKey: string) => {
+  const buf = Buffer.from(JSON.stringify(obj));
+  const data = {
+    Bucket: process.env.BUCKET_NAME,
+    Key: fileKey,
+    Body: buf,
+    ContentEncoding: 'base64',
+    ContentType: 'application/json',
+  };
+  s3.upload(<S3.PutObjectRequest>data, (err: Error, data: ManagedUpload.SendData) => {
+    if (err) {
+      throw new Error(err.toString());
+    }
+  });
+};
+const deleteFileByKey = async (key: string) => {
+  const params = { Bucket: process.env.BUCKET_NAME, Key: key };
+  try {
+    await s3.deleteObject(<S3.DeleteObjectRequest>params).promise();
+  } catch (e) {
+    throw new Error(e as string);
+  }
+};
 export {
   getAllKeysOfFileObjects,
   getAllObjectsInFolder,
   getFileByKey,
+  createJSONDocAndUpload,
+  deleteFileByKey,
 };
