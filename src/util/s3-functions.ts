@@ -55,9 +55,9 @@ const getFileByKey = async (key: string) => {
   } catch (e) {
     throw new Error(e as string);
   }
-  return null;
+  return '';
 };
-module.exports = {
+export {
   getAllKeysOfFileObjects,
   getAllObjectsInFolder,
   getFileByKey,

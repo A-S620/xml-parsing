@@ -7,10 +7,10 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "typeRoots": ["./typings", "./node_modules/@types"],
     "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
   },
   "include": [
     "./src/**/*.ts",
