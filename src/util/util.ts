@@ -11,7 +11,7 @@ function convertXMLDocToJSON(xml: string) {
   };
   const parser = new XMLParser(options);
   const jsObject = parser.parse(xml) as object;
-  if (jsObject) {
+  if (Object.keys(jsObject).length > 0) {
     return jsObject;
   }
   return {};
