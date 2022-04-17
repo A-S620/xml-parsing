@@ -74,6 +74,14 @@ describe('S3 Functions', () => {
       const result = await getFileByKey("test/json/sample-json.json");
       expect(result).toEqual(undefined);
     })
+    it('should throw an error when the BUCKET_NAME is invalid', async () => {
+      process.env.BUCKET_NAME = "";
+      try {
+        await deleteFileByKey("test/new-files/sample-xml.txt");
+      } catch (error) {
+        expect(error).toEqual(new Error("UriParameterError: Expected uri parameter to have length >= 1, but found \"\" for params.Bucket"));
+      }
+    });
 
   })
 })
