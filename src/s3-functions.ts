@@ -1,5 +1,4 @@
 import AWS, { S3 } from 'aws-sdk';
-import { ManagedUpload } from 'aws-sdk/clients/s3';
 
 AWS.config.update({
   accessKeyId: process.env.ACCESS_KEY_ID,
@@ -35,8 +34,8 @@ const getAllObjectsInFolder = async (prefix: string) => {
     if (s3Objects.Contents) {
       return s3Objects.Contents;
     }
-  } catch (e) {
-    throw new Error(e as string);
+  } catch (error) {
+    throw new Error(error as string);
   }
   return [];
 };
@@ -51,12 +50,12 @@ const getFileByKey = async (key: string) => {
     if (file.Body) {
       return file.Body.toString('utf-8');
     }
-  } catch (e) {
-    throw new Error(e as string);
+  } catch (error) {
+    throw new Error(error as string);
   }
   return '';
 };
-const createJSONDocAndUpload = (obj: object, fileKey: string) => {
+const createJSONDocAndUpload = async (obj: object, fileKey: string) => {
   const buf = Buffer.from(JSON.stringify(obj));
   const data = {
     Bucket: process.env.BUCKET_NAME,
@@ -65,18 +64,18 @@ const createJSONDocAndUpload = (obj: object, fileKey: string) => {
     ContentEncoding: 'base64',
     ContentType: 'application/json',
   };
-  s3.upload(<S3.PutObjectRequest>data, (err: Error, data: ManagedUpload.SendData) => {
-    if (err) {
-      throw new Error(err.toString());
-    }
-  });
+  try {
+    await s3.upload(<S3.PutObjectRequest>data).promise();
+  } catch (error) {
+    throw new Error(error as string);
+  }
 };
 const deleteFileByKey = async (key: string) => {
   const params = { Bucket: process.env.BUCKET_NAME, Key: key };
   try {
     await s3.deleteObject(<S3.DeleteObjectRequest>params).promise();
-  } catch (e) {
-    throw new Error(e as string);
+  } catch (error) {
+    throw new Error(error as string);
   }
 };
 export {
