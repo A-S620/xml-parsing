@@ -78,10 +78,29 @@ const deleteFileByKey = async (key: string) => {
     throw new Error(error as string);
   }
 };
+const moveFilesToAnotherFolder = async (folderToMoveFrom: string, destinationFolder
+: string, fileKey: string) => {
+  try {
+    const copySource = `${process.env.BUCKET_NAME}/${fileKey}`;
+    const changedKey = `${destinationFolder}${fileKey.replace(folderToMoveFrom, '')}`;
+    const params = {
+      Bucket: process.env.BUCKET_NAME,
+      CopySource: copySource,
+      Key: changedKey,
+    };
+
+    console.log(`${copySource}    ${changedKey}`);
+    await s3.copyObject(<S3.CopyObjectRequest>params).promise();
+    await deleteFileByKey(fileKey);
+  } catch (error) {
+    throw new Error(error as string);
+  }
+};
 export {
   getAllKeysOfFileObjects,
   getAllObjectsInFolder,
   getFileByKey,
   createJSONDocAndUpload,
   deleteFileByKey,
+  moveFilesToAnotherFolder,
 };

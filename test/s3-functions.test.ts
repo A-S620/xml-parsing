@@ -3,7 +3,8 @@ import {
   deleteFileByKey,
   getAllKeysOfFileObjects,
   getAllObjectsInFolder,
-  getFileByKey
+  getFileByKey,
+  moveFilesToAnotherFolder
 } from "../src/s3-functions";
 import {returnedDebitItems} from "./test-data/test-data";
 
@@ -16,8 +17,10 @@ beforeEach(() => {
   process.env = { ...oldEnvVars };
 });
 
-afterAll(() => {
+afterAll(async () => {
   process.env = oldEnvVars;
+  await deleteFileByKey("json/sample-json.json")
+  await moveFilesToAnotherFolder("archive/", "new-files/", "archive/new-files/sample-xml.txt")
 });
 describe('S3 Functions', () => {
   describe('getAllObjectsInFolder', () => {
@@ -68,6 +71,21 @@ describe('S3 Functions', () => {
       }
     });
   });
+  describe("moveFilesToAnotherFolder", () => {
+    it("should correctly move a file from new-files/ to archive/", async () => {
+      await moveFilesToAnotherFolder("new-files/", "archive/", "test/new-files/sample-xml.txt");
+      expect((await  getFileByKey("test/archive/sample-xml.txt")).substring(0, 43)).toEqual("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>");
+      expect((await  getFileByKey("test/new-files/sample-xml.txt"))).toEqual("");
+    });
+    it('should throw an error when the BUCKET_NAME is invalid', async () => {
+      process.env.BUCKET_NAME = "";
+      try {
+        await moveFilesToAnotherFolder("new-files/", "archive/", "test/new-files/sample-xml.txt");
+      } catch (error) {
+        expect(error).toEqual(new Error("UriParameterError: Expected uri parameter to have length >= 1, but found \"\" for params.Bucket"));
+      }
+    });
+  })
   describe("deleteFileByKey", () => {
     it("should delete the file when a valid key is given", async () => {
       await deleteFileByKey("test/new-files/sample-xml.txt");
