@@ -70,15 +70,7 @@ const createJSONDocAndUpload = async (obj: object, fileKey: string) => {
     throw new Error(error as string);
   }
 };
-const deleteFileByKey = async (key: string) => {
-  const params = { Bucket: process.env.BUCKET_NAME, Key: key };
-  try {
-    await s3.deleteObject(<S3.DeleteObjectRequest>params).promise();
-  } catch (error) {
-    throw new Error(error as string);
-  }
-};
-const moveFilesToAnotherFolder = async (folderToMoveFrom: string, destinationFolder
+const copyFilesToAnotherFolder = async (folderToMoveFrom: string, destinationFolder
 : string, fileKey: string) => {
   try {
     const copySource = `${process.env.BUCKET_NAME}/${fileKey}`;
@@ -88,10 +80,7 @@ const moveFilesToAnotherFolder = async (folderToMoveFrom: string, destinationFol
       CopySource: copySource,
       Key: changedKey,
     };
-
-    console.log(`${copySource}    ${changedKey}`);
     await s3.copyObject(<S3.CopyObjectRequest>params).promise();
-    await deleteFileByKey(fileKey);
   } catch (error) {
     throw new Error(error as string);
   }
@@ -101,6 +90,5 @@ export {
   getAllObjectsInFolder,
   getFileByKey,
   createJSONDocAndUpload,
-  deleteFileByKey,
-  moveFilesToAnotherFolder,
+  copyFilesToAnotherFolder,
 };
