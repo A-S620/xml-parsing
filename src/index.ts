@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { getAllObjectsInFolder } from './aws-functions/s3-functions';
+import { Config } from './config';
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ app.get('/hello', (req: Request, res: Response) => {
 });
 app.get('/new-files', (req: Request, res: Response) => {
   const newFiles = getAllObjectsInFolder('prod/new-files/');
-  res.send(newFiles);
+  res.send(Config.bucketName);
 });
 
 app.listen(PORT, () => console.log(`Running on ${PORT} ⚡`));
