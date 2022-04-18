@@ -1,8 +1,9 @@
 import AWS, { S3 } from 'aws-sdk';
+import { Config } from '../config';
 
 AWS.config.update({
-  accessKeyId: process.env.ACCESS_KEY_ID,
-  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  accessKeyId: Config.accessKeyId,
+  secretAccessKey: Config.secretAccessKey,
   region: 'eu-west-2',
 });
 const s3 = new AWS.S3();
@@ -23,7 +24,7 @@ const getAllKeysOfFileObjects = (arrayOfObjects: Array<object>) => {
 };
 const getAllObjectsInFolder = async (prefix: string) => {
   const params: object = {
-    Bucket: process.env.BUCKET_NAME,
+    Bucket: Config.bucketName,
     Delimiter: '/',
     Prefix: prefix,
   };
@@ -42,7 +43,7 @@ const getAllObjectsInFolder = async (prefix: string) => {
 
 const getFileByKey = async (key: string) => {
   const params = {
-    Bucket: process.env.BUCKET_NAME,
+    Bucket: Config.bucketName,
     Key: key,
   };
   try {
@@ -58,7 +59,7 @@ const getFileByKey = async (key: string) => {
 const createJSONDocAndUpload = async (obj: object, fileKey: string) => {
   const buf = Buffer.from(JSON.stringify(obj));
   const data = {
-    Bucket: process.env.BUCKET_NAME,
+    Bucket: Config.bucketName,
     Key: fileKey,
     Body: buf,
     ContentEncoding: 'base64',
@@ -73,10 +74,10 @@ const createJSONDocAndUpload = async (obj: object, fileKey: string) => {
 const copyFilesToAnotherFolder = async (folderToMoveFrom: string, destinationFolder
 : string, fileKey: string) => {
   try {
-    const copySource = `${process.env.BUCKET_NAME}/${fileKey}`;
+    const copySource = `${Config.bucketName}/${fileKey}`;
     const changedKey = `${destinationFolder}${fileKey.replace(folderToMoveFrom, '')}`;
     const params = {
-      Bucket: process.env.BUCKET_NAME,
+      Bucket: Config.bucketName,
       CopySource: copySource,
       Key: changedKey,
     };

@@ -1,9 +1,10 @@
 import { AttributeValue } from '@aws-sdk/client-dynamodb';
 import AWS, { DynamoDB } from 'aws-sdk';
+import { Config } from '../config';
 
 AWS.config.update({
-  accessKeyId: process.env.ACCESS_KEY_ID,
-  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  accessKeyId: Config.accessKeyId,
+  secretAccessKey: Config.secretAccessKey,
   region: 'eu-west-2',
 });
 const dynamoDB = new AWS.DynamoDB();
@@ -11,7 +12,7 @@ const dynamoDBDocClient = new AWS.DynamoDB.DocumentClient();
 const putItemInDB = async (file: object) => {
   const params: object = {
     Item: file,
-    TableName: process.env.TABLE_NAME,
+    TableName: Config.tableName,
   };
   try {
     await dynamoDBDocClient.put(<DynamoDB.PutItemInput>params).promise();
@@ -25,7 +26,7 @@ const getItemInDB = async (
 ) => {
   const params: object = {
     AttributesToGet: attributesToGet,
-    TableName: process.env.TABLE_NAME,
+    TableName: Config.tableName,
     Key: key,
   };
   try {
@@ -36,7 +37,7 @@ const getItemInDB = async (
 };
 const deleteItemInDB = async (key: { [key: string]: AttributeValue }) => {
   const params: object = {
-    TableName: process.env.TABLE_NAME,
+    TableName: Config.tableName,
     Key: key,
   };
   try {
