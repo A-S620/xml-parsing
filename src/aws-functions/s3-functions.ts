@@ -86,6 +86,7 @@ const copyFilesToAnotherFolder = async (folderToMoveFrom: string, destinationFol
     throw new Error(error as string);
   }
 };
+
 export {
   getAllKeysOfFileObjects,
   getAllObjectsInFolder,
