@@ -17,7 +17,7 @@ app.get('/hello', (req: Request, res: Response) => {
   res.send('Hello World!');
 });
 app.get('/new-files', (req: Request, res: Response) => {
-  const newFiles = getAllObjectsInFolder('new-files/');
+  const newFiles = getAllObjectsInFolder('prod/new-files/');
   res.send(newFiles);
 });
 
