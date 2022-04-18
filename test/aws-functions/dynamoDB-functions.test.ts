@@ -1,5 +1,5 @@
-import {returnedDebitItems} from "./test-data/test-data";
-import {deleteItemInDB, getItemInDB, putItemInDB} from "../src/dynamoDB-functions";
+import {returnedDebitItems} from "../test-data/test-data";
+import {deleteItemInDB, getItemInDB, putItemInDB} from "../../src/aws-functions/dynamoDB-functions";
 
 require('dotenv').config();
 const oldEnvVars = process.env;

@@ -4,8 +4,8 @@ import {
   getAllKeysOfFileObjects,
   getAllObjectsInFolder,
   getFileByKey
-} from "../src/s3-functions";
-import {returnedDebitItems} from "./test-data/test-data";
+} from "../../src/aws-functions/s3-functions";
+import {returnedDebitItems} from "../test-data/test-data";
 
 require('dotenv').config();
 

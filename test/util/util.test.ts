@@ -1,7 +1,7 @@
 import {convertXMLDocToJSON, findReturnedDebitItems} from "../../src/util/util";
 import {returnedDebitItems, xmlAsJSON, xmlAsString} from "../test-data/test-data";
 
-const {getFileByKey} = require("../../src/s3-functions");
+const {getFileByKey} = require("../../src/aws-functions/s3-functions");
 
 describe("Util", () => {
     describe("convertXMLtoJSON", () => {

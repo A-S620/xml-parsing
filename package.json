@@ -8,8 +8,7 @@
     "postinstall": "tsc",
     "watch-node": "nodemon dist/index.js",
     "watch-ts": "tsc -w",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "test:unit": "ENV_FILE=./config/.env.test jest --coverage",
+    "test": "jest --coverage --setupFiles dotenv/config",
     "watch": "jest --watch --setupFiles dotenv/config"
   },
   "repository": {
